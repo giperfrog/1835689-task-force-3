@@ -1,68 +1,79 @@
-<php?
+<?php
 
 class StatusTask
 {
-    const STATUS_NEW='new';
-    const STATUS_CANCEL='cancelled';
-    const STATUS_IN_WORK='in work';
-    const STATUS_DONE='done';
-    const STATUS_FAIL='failed';
-    const ACTION_CANCEL='action cancel';
-    const ACTION_RESPOND='action respond';
-    const ACTION_DONE='action done';
-    const ACTION_FAIL='action fail';
+    const STATUS_NEW = 'new';
+    const STATUS_CANCEL = 'cancelled';
+    const STATUS_IN_WORK = 'in work';
+    const STATUS_DONE = 'done';
+    const STATUS_FAIL = 'failed';
+    const ACTION_CANCEL = 'action cancel';
+    const ACTION_RESPOND = 'action respond';
+    const ACTION_DONE = 'action done';
+    const ACTION_FAIL = 'action fail';
 
-    privat $customerId;
-    privat $contractorId;
+    private $customerId;
+    private $contractorId;
 
-    public $statusName = [
-        'STATUS_NEW' => 'Новое',
-        'STATUS_CANCEL' => 'Отменено',
-        'STATUS_IN_WORK' => 'В работе',
-        'STATUS_DONE' => 'Выполнено',
-        'STATUS_FAIL' => 'Провалено'
-        ]
+    private static $statusName = [
+        self::STATUS_NEW => 'Новое',
+        self::STATUS_CANCEL => 'Отменено',
+        self::STATUS_IN_WORK => 'В работе',
+        self::STATUS_DONE => 'Выполнено',
+        self::STATUS_FAIL => 'Провалено'
+    ];
 
-    public $actionName = [
-        'ACTION_CANCEL' => 'Отменить задание',
-        'ACTION_RESPOND' => 'Откликнуться на задание',
-        'ACTION_DONE' => 'Выполнить задание',
-        'ACTION_FAIL' => 'Отказаться от задания'
-        ];
+    private static $actionName = [
+        self::ACTION_CANCEL => 'Отменить задание',
+        self::ACTION_RESPOND =>'Откликнуться на задание',
+        self::ACTION_DONE => 'Выполнить задание',
+        self::ACTION_FAIL => 'Отказаться от задания'
+    ];
 
-    public function __construct(int $customerId, int $contractorId) {
+    public function __construct(int $customerId, int $contractorId)
+    {
         $this->customerId = $customerId;
         $this->contractorId = $contractorId;
     }
 
-    public function getNextStatus($action)
+    public static function getNextStatus($action)
     {
-        if ($action = 'ACTION_CANCEL') {
-            return $statusName['STATUS_CANCEL'];
+        if ($action === self::ACTION_CANCEL) {
+            return self::$statusName['STATUS_CANCEL'];
         }
-        if ($action = 'ACTION_RESPOND') {
-            return $statusName['STATUS_IN_WORK'];
+        if ($action === self::ACTION_RESPOND) {
+            return self::$statusName['STATUS_IN_WORK'];
         }
-        if ($action = 'ACTION_DONE') {
-            return $statusName['STATUS_DONE'];
+        if ($action === self::ACTION_DONE) {
+            return self::$statusName['STATUS_DONE'];
         }
-        if ($action = 'ACTION_FAIL') {
-            return $statusName['STATUS_FAIL'];
+        if ($action === self::ACTION_FAIL) {
+            return self::$statusName['STATUS_FAIL'];
         }
         else
         {
-            return $statusName['STATUS_NEW'];
+            return self::$statusName['STATUS_NEW'];
         }
     }
 
-    public function getAction()
+    public static function getAction($current_state)
     {
-        $current_state = $this->getNextStatus();
-        switch ($current_state) {
-            case 'Новое':
-                return ($actionName['ACTION_CANCEL'] && $actionName['ACTION_RESPOND']);
-            case 'В работе':
-                return ($actionName['ACTION_DONE'] && $actionName['ACTION_FAIL']);
-        }
+        $current_state = self::getNextStatus(self::$statusName[]);
+            switch ($current_state) {
+                case 'Новое':
+                    if (self::$customerId) {
+                        return self::$actionName['ACTION_CANCEL'];
+                    }
+                    if (self::$contractorId) {
+                        return  self::$actionName['ACTION_RESPOND'];
+                    }
+                case 'В работе':
+                    if (self::$customerId) {
+                        return self::$actionName['ACTION_DONE'];
+                    }
+                    if (self::$contractorId) {
+                        return self::$actionName['ACTION_FAIL'];
+                    }
+            }
     }
 }
