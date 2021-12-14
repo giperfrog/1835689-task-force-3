@@ -30,50 +30,51 @@ class StatusTask
         self::ACTION_FAIL => 'Отказаться от задания'
     ];
 
-    public function __construct(int $customerId, int $contractorId)
+        public function __construct(int $customerId, int $contractorId)
     {
         $this->customerId = $customerId;
         $this->contractorId = $contractorId;
     }
 
-    public static function getNextStatus($action)
+    public static function getNextStatus($action, $current_state)
     {
-        if ($action === self::ACTION_CANCEL) {
-            return self::$statusName['STATUS_CANCEL'];
-        }
-        if ($action === self::ACTION_RESPOND) {
-            return self::$statusName['STATUS_IN_WORK'];
-        }
-        if ($action === self::ACTION_DONE) {
-            return self::$statusName['STATUS_DONE'];
-        }
-        if ($action === self::ACTION_FAIL) {
-            return self::$statusName['STATUS_FAIL'];
-        }
-        else
-        {
-            return self::$statusName['STATUS_NEW'];
+        $current_state = self::$statusName['STATUS_NEW'];
+
+        switch ($current_state) {
+            case 'Новое':
+                if ($action === self::ACTION_CANCEL && self::$customerId) {
+                    return $current_state = self::$statusName['STATUS_CANCEL'];
+                }
+                if ($action === self::ACTION_RESPOND && self::$contractorId) {
+                    return $current_state = self::$statusName['STATUS_IN_WORK'];
+                }
+            case 'В работе':
+                if ($action === self::ACTION_DONE && self::$customerId) {
+                    return $current_state = self::$statusName['STATUS_DONE'];
+                }
+                if ($action === self::ACTION_FAIL && self::$contractorId) {
+                    return $current_state = self::$statusName['STATUS_FAIL'];
+                }
         }
     }
 
     public static function getAction($current_state)
     {
-        $current_state = self::getNextStatus(self::$statusName[]);
-            switch ($current_state) {
-                case 'Новое':
-                    if (self::$customerId) {
-                        return self::$actionName['ACTION_CANCEL'];
-                    }
-                    if (self::$contractorId) {
-                        return  self::$actionName['ACTION_RESPOND'];
-                    }
-                case 'В работе':
-                    if (self::$customerId) {
-                        return self::$actionName['ACTION_DONE'];
-                    }
-                    if (self::$contractorId) {
-                        return self::$actionName['ACTION_FAIL'];
-                    }
-            }
+        switch ($current_state) {
+            case 'Новое':
+                if (self::$customerId) {
+                    return self::$actionName['ACTION_CANCEL'];
+                }
+                if (self::$contractorId) {
+                    return  self::$actionName['ACTION_RESPOND'];
+                }
+            case 'В работе':
+                if (self::$customerId) {
+                    return self::$actionName['ACTION_DONE'];
+                }
+                if (self::$contractorId) {
+                    return self::$actionName['ACTION_FAIL'];
+                }
+        }
     }
 }
