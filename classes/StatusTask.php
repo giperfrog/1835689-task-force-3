@@ -15,7 +15,7 @@ class StatusTask
 
     private $customerId;
     private $contractorId;
-    public $current_state;
+    private $current_state;
 
     private static $statusName =
     [
@@ -42,35 +42,35 @@ class StatusTask
         $this->current_state = $current_state;
     }
 
-    public static function getNextStatus($current_state, $user_id, $action)
+    public function getNextStatus($user_id, $action)
     {
-        if ($current_state === self::$statusName['STATUS_NEW'] && $user_id === self::$customerId && $action === self::ACTION_CANCEL) {
-            return self::$statusName['STATUS_CANCEL'];
+        if ($this->current_state === self::$statusName['self::STATUS_NEW'] && $user_id === $this->customerId && $action === self::ACTION_CANCEL) {
+            return self::$statusName['self::STATUS_CANCEL'];
         }
-        if ($current_state === self::$statusName['STATUS_NEW'] && $user_id === self::$customerId && $action === self::ACTION_ACCEPT) {
-            return self::$statusName['STATUS_IN_WORK'];
+        if ($this->current_state === self::$statusName['self::STATUS_NEW'] && $user_id === $this->customerId && $action === self::ACTION_ACCEPT) {
+            return self::$statusName['self::STATUS_IN_WORK'];
         }
-        if ($current_state = self::$statusName['STATUS_IN_WORK'] && $user_id === self::$customerId && $action === self::ACTION_DONE) {
-            return self::$statusName['STATUS_DONE'];
+        if ($this->current_state = self::$statusName['self::STATUS_IN_WORK'] && $user_id === $this->customerId && $action === self::ACTION_DONE) {
+            return self::$statusName['self::STATUS_DONE'];
         }
-        if ($current_state = self::$statusName['STATUS_IN_WORK'] && $user_id === self::$contractorId && $action === self::ACTION_FAIL) {
-            return self::$statusName['STATUS_FAIL'];
+        if ($this->current_state = self::$statusName['self::STATUS_IN_WORK'] && $user_id === $this->contractorId && $action === self::ACTION_FAIL) {
+            return self::$statusName['self::STATUS_FAIL'];
         }
     }
 
-    public static function getAction($current_state, $user_id)
+    public function getAction($user_id)
     {
-        if ($current_state === self::$statusName['STATUS_NEW'] && $user_id === self::$customerId) {
-            return self::$actionName['ACTION_CANCEL'] && self::$actionName['ACTION_ACCEPT'];
+        if ($this->current_state === self::$statusName['self::STATUS_NEW'] && $user_id === $this->customerId) {
+            return self::$actionName['self::ACTION_CANCEL'] && self::$actionName['self::ACTION_ACCEPT'];
         }
-        if ($current_state === self::$statusName['STATUS_NEW'] && $user_id === self::$contractorId) {
-            return  self::$actionName['ACTION_RESPOND'];
+        if ($this->current_state === self::$statusName['self::STATUS_NEW'] && $user_id === $this->contractorId) {
+            return  self::$actionName['self::ACTION_RESPOND'];
         }
-        if ($current_state = self::$statusName['STATUS_IN_WORK'] && $user_id === self::$customerId) {
-            return self::$actionName['ACTION_DONE'];
+        if ($this->current_state = self::$statusName['self::STATUS_IN_WORK'] && $user_id === $this->customerId) {
+            return self::$actionName['self::ACTION_DONE'];
         }
-        if ($current_state = self::$statusName['STATUS_IN_WORK'] && $user_id === self::$contractorId) {
-            return self::$actionName['ACTION_FAIL'];
+        if ($this->current_state = self::$statusName['self::STATUS_IN_WORK'] && $user_id === $this->contractorId) {
+            return self::$actionName['self::ACTION_FAIL'];
         }
     }
 }
