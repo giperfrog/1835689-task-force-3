@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Dns\\1835689TaskForce3\\": "src/"
+            "TaskForce\\": "src/"
         }
     },
     "authors": [

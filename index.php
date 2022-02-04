@@ -1,6 +1,6 @@
 <?php
 
-use Dns1835689TaskForce3\service\StatusTask;
+use TaskForce\service\StatusTask;
 
 require_once 'vendor/autoload.php';
 

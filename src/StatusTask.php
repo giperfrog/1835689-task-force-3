@@ -1,6 +1,6 @@
 <?php
 
-namespace Dns1835689TaskForce3\service;
+namespace TaskForce\service;
 
 class StatusTask
 {
