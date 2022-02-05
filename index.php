@@ -1,6 +1,6 @@
 <?php
 
-use TaskForce\service\StatusTask;
+use TaskForce\StatusTask;
 
 require_once 'vendor/autoload.php';
 
