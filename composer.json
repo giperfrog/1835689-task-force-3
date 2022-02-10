@@ -1,0 +1,18 @@
+{
+    "name": "dns/1835689-task-force-3",
+    "description": "Website task-force",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TaskForce\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kashina Olga",
+            "email": "giperfrog@gmail.com"
+        }
+    ],
+    "require": {}
+}
